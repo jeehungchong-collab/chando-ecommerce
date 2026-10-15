@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1785226465067,
+      "tag": "0000_broad_talkback",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1785379133825,
+      "tag": "0001_true_lily_hollister",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1786295382662,
+      "tag": "0002_gray_the_hunter",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1789022811149,
+      "tag": "0003_stormy_felicia_hardy",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792029732064,
+      "tag": "0004_yummy_lizard",
+      "breakpoints": true
+    }
+  ]
+}

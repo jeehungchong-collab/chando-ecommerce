@@ -1,0 +1,42 @@
+{
+  "title": "September 2026 Livehost Performance",
+  "subtitle": "Performance-only dashboard for uploaded Shopee livestream exports. Private payroll identity fields are excluded.",
+  "generatedAt": "2026-10-02T16:48:17.627Z",
+  "uploadedByEmail": "jeehung.chong@chando.my",
+  "sourceFiles": ["Shopee September 2026 livestream export"],
+  "summary": {
+    "fileNames": ["Shopee September 2026 livestream export"],
+    "rowCount": 186,
+    "dateRange": "2026-09-01 to 2026-09-30",
+    "detectedHosts": ["Hana", "Iefaa", "Bibi", "Fish", "Intan", "Rosha", "Zati"],
+    "unclearRows": 0,
+    "totalGmv": 127064.78,
+    "totalOrders": 1578,
+    "totalViews": 191347
+  },
+  "hosts": [
+    {"name":"Hana","gmv":23574.59,"hours":59.33,"gmvHour":397,"orders":297,"views":23576,"viewerCvr":1.26,"atcOrder":15.49,"costRoi":10.31,"peakShare":59.1,"campaign":0,"late":357,"night":639,"noon":0,"offPeak":211,"read":"Best signal is Night peak (639/hr), but conversion is below stronger hosts. Review script and product mix before scaling."},
+    {"name":"Iefaa","gmv":38929.1,"hours":117.31,"gmvHour":332,"orders":488,"views":70096,"viewerCvr":0.7,"atcOrder":15.05,"costRoi":11.95,"peakShare":50.6,"campaign":0,"late":342,"night":412,"noon":308,"offPeak":294,"read":"Best signal is Night peak (412/hr), but conversion is below stronger hosts. Review script and product mix before scaling."},
+    {"name":"Bibi","gmv":14762.15,"hours":48.84,"gmvHour":302,"orders":182,"views":16868,"viewerCvr":1.08,"atcOrder":15.35,"costRoi":11.53,"peakShare":26.7,"campaign":0,"late":0,"night":0,"noon":261,"offPeak":307,"read":"Best signal is Off-peak (307/hr), but conversion is below stronger hosts. Review script and product mix before scaling."},
+    {"name":"Fish","gmv":12705.87,"hours":42.56,"gmvHour":299,"orders":170,"views":20653,"viewerCvr":0.82,"atcOrder":14.8,"costRoi":10.87,"peakShare":41.8,"campaign":0,"late":0,"night":0,"noon":424,"offPeak":237,"read":"Best signal is Noon peak (424/hr), but conversion is below stronger hosts. Review script and product mix before scaling."},
+    {"name":"Intan","gmv":24243.1,"hours":88.52,"gmvHour":274,"orders":281,"views":37608,"viewerCvr":0.75,"atcOrder":15.63,"costRoi":11.35,"peakShare":27.6,"campaign":0,"late":532,"night":737,"noon":226,"offPeak":218,"read":"Best signal is Night peak (737/hr), but conversion is below stronger hosts. Review script and product mix before scaling."},
+    {"name":"Rosha","gmv":9338.44,"hours":36.48,"gmvHour":256,"orders":115,"views":17602,"viewerCvr":0.65,"atcOrder":15.15,"costRoi":6.35,"peakShare":45.1,"campaign":0,"late":272,"night":239,"noon":233,"offPeak":257,"read":"Best signal is Late night peak (272/hr), but conversion is below stronger hosts. Review script and product mix before scaling."},
+    {"name":"Zati","gmv":3511.53,"hours":15.11,"gmvHour":232,"orders":45,"views":4944,"viewerCvr":0.91,"atcOrder":14.75,"costRoi":2.18,"peakShare":13.7,"campaign":0,"late":127,"night":0,"noon":0,"offPeak":249,"read":"Very low expanded-peak exposure. Schedule may be hiding her ceiling; test promo dates or late night."}
+  ],
+  "timing": [
+    {"label":"Campaign dates","window":"7/7, 15/7, 25/7","sessions":0,"hours":0,"gmv":0,"gmvHour":0,"viewerCvr":0,"views":0,"orders":0},
+    {"label":"Late night peak","window":"10pm-12am","sessions":21,"hours":42.5,"gmv":14972.22,"gmvHour":352,"viewerCvr":0.77,"views":24635,"orders":189},
+    {"label":"Night peak","window":"8-10pm","sessions":25,"hours":61.25,"gmv":31014.36,"gmvHour":506,"viewerCvr":1.21,"views":31156,"orders":377},
+    {"label":"Noon peak","window":"12-2pm","sessions":27,"hours":56.98,"gmv":17631.26,"gmvHour":309,"viewerCvr":0.9,"views":24273,"orders":218},
+    {"label":"Off-peak","window":"Other slots","sessions":113,"hours":247.41,"gmv":63446.94,"gmvHour":256,"viewerCvr":0.71,"views":111283,"orders":794}
+  ],
+  "recommendations": [
+    ["Promo-date priority", "-", "Campaign dates are the strongest period; prioritize hosts with proven campaign GMV/hour."],
+    ["Late-night priority", "Intan, Hana, Iefaa", "10pm-12am should be treated as a high-value slot when enough host history exists."],
+    ["8-10pm priority", "Intan, Hana, Iefaa", "Use 8-10pm for hosts with strong conversion or clear GMV/hour lift."],
+    ["Test more peak slots", "Zati", "Low peak exposure means the current monthly total may understate their ceiling."],
+    ["Improve before scaling", "Rosha, Iefaa, Intan", "Conversion is below the team leaders; improve script, product mix, or offer before more premium slots."]
+  ],
+  "unclearRows": [],
+  "sessions": []
+}
