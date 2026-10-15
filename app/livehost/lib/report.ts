@@ -557,8 +557,6 @@ export function julyArchiveItem(): ReportArchiveItem {
   };
 }
 
-const baselineArchiveItem = julyArchiveItem;
-
 export function septemberArchiveItem(): ReportArchiveItem {
   return {
     id: "migrated-september-2026",

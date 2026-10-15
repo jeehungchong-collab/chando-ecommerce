@@ -357,11 +357,15 @@ export default function LazadaTrackerClient() {
   useEffect(() => {
     // Explicit fresh start: never restore old local sales or history.
     try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(HISTORY_STORAGE_KEY); } catch {}
-    void refreshCloud();
+    const initialRefresh = window.setTimeout(() => void refreshCloud(), 0);
     const timer = setInterval(() => { if (!document.hidden) void refreshCloud(); }, 30000);
     const focus = () => { void refreshCloud(); };
     window.addEventListener("focus", focus);
-    return () => { clearInterval(timer); window.removeEventListener("focus", focus); };
+    return () => {
+      clearTimeout(initialRefresh);
+      clearInterval(timer);
+      window.removeEventListener("focus", focus);
+    };
   }, []);
 
   useEffect(() => {

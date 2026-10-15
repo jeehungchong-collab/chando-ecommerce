@@ -61,7 +61,7 @@ export function ReportDashboard({
   const [endDate, setEndDate] = useState("");
   const selectedArchive = reports.find((item) => item.id === selectedReportId) ?? reports[0];
   const report = selectedArchive?.report;
-  const sessions = report.sessions ?? [];
+  const sessions = useMemo(() => report.sessions ?? [], [report.sessions]);
   const bounds = useMemo(() => dateBounds(sessions), [sessions]);
   const visibleReport = useMemo(
     () => filterReport(report, startDate, endDate),

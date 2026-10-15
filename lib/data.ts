@@ -1,6 +1,5 @@
 import { env } from "cloudflare:workers";
 import {
-  addDays,
   addDaysToTimestamp,
   buildPerformance,
   buildRestartPerformance,

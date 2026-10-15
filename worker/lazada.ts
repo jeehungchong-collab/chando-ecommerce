@@ -1,24 +1,60 @@
 export const ALLOWED_UPLOADERS = ["jeehung.chong@chando.my", "jinhui@chando.my"];
+
+type LazadaRow = {
+  sku: string;
+  price: number;
+  stock: number;
+  sales: number;
+};
+
+type LazadaDraft = {
+  listingId: string;
+  listingTitle: string;
+  periodStart: string;
+  periodEnd: string;
+  rows: LazadaRow[];
+};
+
+type SessionDbRow = { session_key: string; payload: string };
+type ImportDbRow = {
+  id: string | number;
+  payload: string;
+  status: string;
+  uploaded_by: string;
+  created_at: string;
+};
+type StatusDbRow = { status: string };
+
 const json = (value: unknown, status = 200) => Response.json(value, { status, headers: { "Cache-Control": "no-store" } });
-export function validateDraft(input: any) {
-  const date = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-  if (!input || !/^\d+$/.test(input.listingId) || !input.listingTitle?.trim() ||
-      !date.test(input.periodStart) || !date.test(input.periodEnd) ||
-      !Number.isFinite(Date.parse(input.periodStart + "+08:00")) ||
-      !Number.isFinite(Date.parse(input.periodEnd + "+08:00")) ||
-      input.periodStart < "2026-09-02T00:00" || input.periodEnd <= input.periodStart)
+export function validateDraft(input: unknown): LazadaDraft {
+  if (!input || typeof input !== "object") {
     throw new Error("Valid Listing ID, title and session dates are required (Malaysia time).");
-  if (!Array.isArray(input.rows) || !input.rows.length || input.rows.length > 500) throw new Error("Expected 1–500 SKU rows.");
-  const seen = new Set();
-  const rows = input.rows.map((row: any) => {
+  }
+  const candidate = input as Record<string, unknown>;
+  const listingId = typeof candidate.listingId === "string" ? candidate.listingId : "";
+  const listingTitle = typeof candidate.listingTitle === "string" ? candidate.listingTitle : "";
+  const periodStart = typeof candidate.periodStart === "string" ? candidate.periodStart : "";
+  const periodEnd = typeof candidate.periodEnd === "string" ? candidate.periodEnd : "";
+  const date = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+  if (!/^\d+$/.test(listingId) || !listingTitle.trim() ||
+      !date.test(periodStart) || !date.test(periodEnd) ||
+      !Number.isFinite(Date.parse(periodStart + "+08:00")) ||
+      !Number.isFinite(Date.parse(periodEnd + "+08:00")) ||
+      periodStart < "2026-09-02T00:00" || periodEnd <= periodStart)
+    throw new Error("Valid Listing ID, title and session dates are required (Malaysia time).");
+  if (!Array.isArray(candidate.rows) || !candidate.rows.length || candidate.rows.length > 500) throw new Error("Expected 1–500 SKU rows.");
+  const seen = new Set<string>();
+  const rows = candidate.rows.map((value): LazadaRow => {
+    if (!value || typeof value !== "object") throw new Error("Invalid SKU row.");
+    const row = value as Record<string, unknown>;
     const sku = String(row.sku || "").trim();
     if (!sku || sku.length > 200 || /…|\.\.\.$/.test(sku) || seen.has(sku)) throw new Error("Missing, truncated or duplicate variation name in this session.");
     seen.add(sku);
     if (![row.price, row.stock, row.sales].every(v => typeof v === "number" && Number.isFinite(v) && v >= 0) ||
         !Number.isInteger(row.stock) || !Number.isInteger(row.sales)) throw new Error("Price, stock and sales must be valid non-negative numbers.");
-    return { sku, price: row.price, stock: row.stock, sales: row.sales };
-  }).sort((a: any, b: any) => a.sku.localeCompare(b.sku));
-  return { listingId: input.listingId, listingTitle: input.listingTitle.trim().slice(0, 1000), periodStart: input.periodStart, periodEnd: input.periodEnd, rows };
+    return { sku, price: row.price as number, stock: row.stock as number, sales: row.sales as number };
+  }).sort((a, b) => a.sku.localeCompare(b.sku));
+  return { listingId, listingTitle: listingTitle.trim().slice(0, 1000), periodStart, periodEnd, rows };
 }
 async function digest(bytes: ArrayBuffer) {
   return [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))].map(x => x.toString(16).padStart(2, "0")).join("");
@@ -28,12 +64,12 @@ export async function lazadaApi(request: Request, env: { DB: D1Database; UPLOADS
   const canUpload = ALLOWED_UPLOADERS.includes(email);
   try {
     if (request.method === "GET") {
-      const sessions = await env.DB.prepare("SELECT session_key, payload FROM lazada_sessions").all<any>();
-      const records = sessions.results.flatMap((s: any) => {
-        const d = JSON.parse(s.payload);
-        return d.rows.map((r: any) => ({ ...r, id: s.session_key + "|" + r.sku, listingId: d.listingId, listingTitle: d.listingTitle, periodStart: d.periodStart, periodEnd: d.periodEnd, sourceNote: "Shared cloud record" }));
+      const sessions = await env.DB.prepare("SELECT session_key, payload FROM lazada_sessions").all<SessionDbRow>();
+      const records = sessions.results.flatMap((session) => {
+        const draft = JSON.parse(session.payload) as LazadaDraft;
+        return draft.rows.map((row) => ({ ...row, id: session.session_key + "|" + row.sku, listingId: draft.listingId, listingTitle: draft.listingTitle, periodStart: draft.periodStart, periodEnd: draft.periodEnd, sourceNote: "Shared cloud record" }));
       });
-      const history = canUpload ? (await env.DB.prepare("SELECT * FROM lazada_imports ORDER BY id DESC").all<any>()).results.map((r: any) => ({ ...JSON.parse(r.payload), id: String(r.id), status: r.status, uploadedBy: r.uploaded_by, importedAt: r.created_at, replaced: r.status === "replaced" })) : [];
+      const history = canUpload ? (await env.DB.prepare("SELECT * FROM lazada_imports ORDER BY id DESC").all<ImportDbRow>()).results.map((row) => ({ ...JSON.parse(row.payload), id: String(row.id), status: row.status, uploadedBy: row.uploaded_by, importedAt: row.created_at, replaced: row.status === "replaced" })) : [];
       return json({ records, history, canUpload, email });
     }
     if (request.method !== "POST") return json({ error: "Method not allowed" }, 405);
@@ -65,13 +101,13 @@ export async function lazadaApi(request: Request, env: { DB: D1Database; UPLOADS
     const key = [draft.listingId, draft.periodStart, draft.periodEnd].join("|");
     const payload = JSON.stringify(draft);
     const fingerprint = await digest(new TextEncoder().encode(JSON.stringify(draft.rows)).buffer);
-    const history = JSON.stringify({ ...draft, sourceFile, skuRows: draft.rows.length, salesCount: draft.rows.reduce((n: number, r: any) => n + r.sales, 0), salesValue: draft.rows.reduce((n: number, r: any) => n + r.sales * r.price, 0) });
+    const history = JSON.stringify({ ...draft, sourceFile, skuRows: draft.rows.length, salesCount: draft.rows.reduce((n, row) => n + row.sales, 0), salesValue: draft.rows.reduce((n, row) => n + row.sales * row.price, 0) });
     // One transaction serializes simultaneous teammates' imports. Same session is never added twice.
     const result = await env.DB.batch([
       env.DB.prepare("INSERT INTO lazada_imports(session_key,payload,status,uploaded_by,created_at,r2_key) SELECT ?,json_set(?, '$.revision', COALESCE((SELECT revision FROM lazada_sessions WHERE session_key=?),0) + CASE WHEN EXISTS(SELECT 1 FROM lazada_sessions WHERE session_key=? AND fingerprint=?) THEN 0 ELSE 1 END), CASE WHEN EXISTS(SELECT 1 FROM lazada_sessions WHERE session_key=? AND fingerprint=?) THEN 'skipped' WHEN EXISTS(SELECT 1 FROM lazada_sessions WHERE session_key=?) THEN 'replaced' ELSE 'added' END,?,?,? RETURNING status").bind(key, history, key, key, fingerprint, key, fingerprint, key, email, now, r2Key),
       env.DB.prepare("INSERT INTO lazada_sessions(session_key,payload,fingerprint,revision) VALUES(?,?,?,1) ON CONFLICT(session_key) DO UPDATE SET payload=excluded.payload, fingerprint=excluded.fingerprint, revision=lazada_sessions.revision + CASE WHEN lazada_sessions.fingerprint=excluded.fingerprint THEN 0 ELSE 1 END").bind(key, payload, fingerprint),
     ]);
-    return json({ status: (result[0].results[0] as any).status });
+    return json({ status: (result[0].results[0] as StatusDbRow).status });
   } catch {
     return json({ error: "Cloud storage is unavailable. Your import was not confirmed; refresh and retry." }, 503);
   }

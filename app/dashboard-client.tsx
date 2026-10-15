@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useEffect, useMemo, useState } from "react";
 import { datesInWindow } from "@/lib/calculations";
 import AdminClient, { type AdminClientProps } from "./admin/admin-client";
@@ -666,13 +668,13 @@ export default function DashboardClient({
     <main>
       <PlatformNav active="shopee" />
       <header className="site-header">
-        <a className="brand-lockup" href="/">
+        <Link className="brand-lockup" href="/">
           <span className="brand-mark">CH</span>
           <span>
             <strong>CHANDO</strong>
             <small>Himalaya Malaysia</small>
           </span>
-        </a>
+        </Link>
         <nav className="header-actions" aria-label="Dashboard actions">
           <a className="ghost-button" href={admin ? "#admin-workspace" : "/admin"}>
             Admin workspace

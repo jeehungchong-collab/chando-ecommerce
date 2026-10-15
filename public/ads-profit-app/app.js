@@ -1,4 +1,4 @@
-import {labels,number,inspect,aggregate,days,compare,divide} from './core.js';
+import {labels,number,inspect,aggregate,days,compare} from './core.js';
 import {parseOperations,settingHistory} from './operations.js?v=20260913';
 let operationLog=null;
 const $=id=>document.getElementById(id),states=[{},{}];let result=null;

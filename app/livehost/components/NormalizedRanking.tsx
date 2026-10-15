@@ -58,7 +58,7 @@ export function NormalizedRanking({ sessions, startDate, endDate }: {
         Multiplier = team golden GMV/hour ÷ team normal GMV/hour.</p>
       <p className="normalization-note">Whole sessions are grouped by start time: 12–2pm and 8pm–12am are golden.
         Golden and normal hours are whole-session hours in each group; their shares use total host hours.
-        Raw GMV is confirmed sales before timing adjustment, and each period's raw GMV/hour uses its own hours.
+        Raw GMV is confirmed sales before timing adjustment, and each period&apos;s raw GMV/hour uses its own hours.
         Confirmed campaign dates: 7, 15 and 25 July. Other months have no confirmed campaign dates configured.
         {result.crossBoundary > 0 ? ` ${result.crossBoundary} sessions cross a timing boundary; hourly sales are unavailable.` : ""}</p>
       <p className="normalization-note">Baselines include each host. This adjusts observed timing differences, not voucher, product or advertising effects.

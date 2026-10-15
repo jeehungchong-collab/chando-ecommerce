@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 };
 
 export default async function ShopeePage() {
+  // The dashboard's "as of" label intentionally reflects request time.
+  // eslint-disable-next-line react-hooks/purity
   const asOf = new Date(Date.now() + 8 * 60 * 60 * 1000)
     .toISOString()
     .slice(0, 16)

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import PlatformNav from "./platform-nav";
 import { getTeamOverview } from "@/lib/overview";
 import { loadReportArchive } from "./livehost/lib/report";
@@ -29,13 +30,13 @@ export default async function HomePage() {
     <main className="team-overview">
       <PlatformNav active="overview" />
       <header className="overview-header">
-        <a className="brand-lockup" href="/">
+        <Link className="brand-lockup" href="/">
           <span className="brand-mark">CH</span>
           <span>
             <strong>CHANDO</strong>
             <small>Ecommerce Dashboard</small>
           </span>
-        </a>
+        </Link>
         <span className="overview-access">Private workspace · Malaysia time</span>
       </header>
 

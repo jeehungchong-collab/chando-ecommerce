@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import type {
   CampaignSummary,
   CompletionListing,
@@ -189,21 +190,21 @@ export default function AdminClient({
       id={embedded ? "admin-workspace" : undefined}
     >
       {!embedded && <header className="site-header">
-        <a className="brand-lockup" href="/">
+        <Link className="brand-lockup" href="/">
           <span className="brand-mark">CH</span>
           <span>
             <strong>CHANDO</strong>
             <small>Flash Sale admin</small>
           </span>
-        </a>
+        </Link>
         <div className="header-actions">
           <span className="admin-identity">
             <strong>{user.displayName}</strong>
             <small>{user.email}</small>
           </span>
-          <a className="ghost-button" href="/">
+          <Link className="ghost-button" href="/">
             View dashboard
-          </a>
+          </Link>
         </div>
       </header>}
 
