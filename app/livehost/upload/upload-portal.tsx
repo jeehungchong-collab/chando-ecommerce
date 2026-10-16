@@ -64,6 +64,24 @@ export function UploadPortal() {
   return (
     <section className="upload-panel">
       <p><a href="/livehost/upload/backups">Original file archive</a></p>
+      <details className="export-tutorial" open>
+        <summary>How to export the weekly file from Shopee</summary>
+        <div className="export-tutorial-body">
+          <ol>
+            <li>Open <strong>Shopee Seller Centre</strong>, then go to the livestream performance or livestream data section.</li>
+            <li>Set the report period to the full week: <strong>Monday through Sunday</strong>.</li>
+            <li>Export the <strong>livestream session performance detail</strong> for every host and every session in that week.</li>
+            <li>Download the report as <strong>CSV or Excel</strong>, then upload the original file below. Do not rename or delete columns.</li>
+          </ol>
+          <div className="export-file-check">
+            <strong>Choose the file that contains these columns</strong>
+            <p>Livestream Name · Start Time · Duration · Viewers · ATC · Orders (Confirmed Order) · Items Sold (Confirmed Order) · Sales (Confirmed Order)</p>
+          </div>
+          <p className="export-tutorial-note">
+            Shopee may use slightly different menu names in different Seller Centre versions. Check the column names before uploading. If the week is split across several exports, select all files together.
+          </p>
+        </div>
+      </details>
       <form onSubmit={previewUpload}>
         <label className="file-drop">
           <span>Select Shopee export files</span>

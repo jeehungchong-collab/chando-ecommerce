@@ -419,6 +419,52 @@ tbody tr:last-child td {
   box-shadow: 0 18px 45px rgba(18, 52, 42, 0.07);
 }
 
+.export-tutorial {
+  margin: 18px 0 22px;
+  overflow: hidden;
+  border: 1px solid #cddbd4;
+  border-radius: 8px;
+  background: #f7faf7;
+}
+
+.export-tutorial summary {
+  padding: 16px 18px;
+  color: var(--green-dark);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.export-tutorial-body {
+  padding: 0 18px 18px;
+  color: #34443e;
+  line-height: 1.55;
+}
+
+.export-tutorial-body ol {
+  margin: 0 0 16px;
+  padding-left: 22px;
+}
+
+.export-tutorial-body li + li {
+  margin-top: 8px;
+}
+
+.export-file-check {
+  padding: 14px 16px;
+  border-left: 4px solid var(--green-dark);
+  background: #ffffff;
+}
+
+.export-file-check p,
+.export-tutorial-note {
+  margin: 6px 0 0;
+}
+
+.export-tutorial-note {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .upload-panel form {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
